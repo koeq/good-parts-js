@@ -60,3 +60,76 @@ const inc2 = liftf(add)(1);
 const inc3 = curry(add, 1);
 
 // console.log(inc1(5));
+
+// 3
+// const twice = (binary) => {
+//   return (a) => {
+//     return binary(a, a);
+//   };
+// };
+
+// the next solutions are unnecessarily complicated
+// const twice = (binary) => {
+//   return (first) => {
+//     const curried = curry(binary, first);
+//     return curried(first);
+//   };
+// };
+
+const twice = (binary) => {
+  const lifted = liftf(binary);
+  return (first) => {
+    return lifted(first)(first);
+  };
+};
+
+// console.log(twice(mul)(10));
+
+// const reverse = (binary) => {
+//   return (x, y) => {
+//     return binary(y, x);
+//   };
+// };
+
+// reverse any number of arguments
+const reverse = (func) => {
+  return (...args) => {
+    return func(...args.reverse());
+  };
+};
+
+// console.log(reverse(sub)(3, 2));
+
+const doubl = twice(add);
+const square = twice(mul);
+
+const composeU = (firstFunc, secondFunc) => {
+  return (first) => {
+    return secondFunc(firstFunc(first));
+  };
+};
+
+// console.log(composeU(doubl, square)(5));
+
+const composeB = (firstFunc, secondFunc) => {
+  return (first, second, third) => {
+    return secondFunc(firstFunc(first, second), third);
+  };
+};
+
+// console.log(composeB(add, mul)(2, 3, 7));
+
+const limit = (binary, n) => {
+  return (first, second) => {
+    if (n >= 1) {
+      n--;
+      return binary(first, second);
+    }
+
+    return undefined;
+  };
+};
+
+const addLtd = limit(add, 1);
+
+console.log(addLtd(3, 4), addLtd(3, 4));
