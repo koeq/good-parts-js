@@ -132,4 +132,78 @@ const limit = (binary, n) => {
 
 const addLtd = limit(add, 1);
 
-console.log(addLtd(3, 4), addLtd(3, 4));
+// console.log(addLtd(3, 4), addLtd(3, 4));
+
+// 4
+// const from = (n) => {
+//   let returned = false;
+//   return () => {
+//     if (returned) {
+//       n = n + 1;
+//     }
+
+//     returned = true;
+//     return n;
+//   };
+// };
+
+// const from = (start) => {
+//   return () => {
+//     const next = start;
+//     start += 1;
+//     return next;
+//   };
+// };
+
+const from = (n) => {
+  return () => {
+    return n++;
+  };
+};
+
+// const index = from(0);
+// console.log(index(), index(), index());
+
+const to = (generator, limit) => {
+  return () => {
+    const result = generator();
+
+    if (result < limit) {
+      return result;
+    }
+
+    return undefined;
+  };
+};
+
+const limitedFrom = to(from(1), 3);
+// console.log(limitedFrom(), limitedFrom(), limitedFrom());
+
+// const fromTo = (current, end) => {
+//   return () => {
+//     if (current < end) {
+//       return current++;
+//     }
+
+//     return undefined;
+//   };
+// };
+
+const fromTo = (start, end) => {
+  return to(from(start), end);
+};
+
+// const index = fromTo(0, 3);
+// console.log(index(), index(), index(), index());
+
+const element = (arr, generator) => {
+  return () => {
+    const index = generator();
+    if (index !== undefined) {
+      return arr[index];
+    }
+  };
+};
+
+const ele = element(["a", "b", "c"], fromTo(1, 3));
+console.log(ele(), ele(), ele());
