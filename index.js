@@ -220,5 +220,63 @@ const modifiedElement = (arr, generator = undefined) => {
   };
 };
 
-const ele = modifiedElement(["a", "b", "c"]);
-console.log(ele(), ele(), ele(), ele());
+// const ele = modifiedElement(["a", "b", "c"]);
+// console.log(ele(), ele(), ele(), ele());
+
+// 5
+const collect = (generator, arr) => {
+  return () => {
+    const res = generator();
+    if (res || res === 0) {
+      arr.push(res);
+    }
+
+    return res;
+  };
+};
+
+// const arr = [];
+// const col = collect(fromTo(0, 2), arr);
+// console.log(col(), col(), col(), col());
+// console.log(arr);
+
+// const filter = (generator, predicate) => {
+//   return () => {
+//     let res = generator();
+//     while (res !== undefined && !predicate(res)) {
+//       res = generator();
+//     }
+
+//     return res;
+//   };
+// };
+
+const filter = (generator, predicate) => {
+  return function recur() {
+    const res = generator();
+
+    if (res === undefined || predicate(res)) {
+      return res;
+    }
+
+    return recur();
+  };
+};
+
+// const fil = filter(fromTo(0, 5), (value) => value % 3 === 0);
+// console.log(fil(), fil(), fil());
+
+const concat = (gen1, gen2) => {
+  return () => {
+    const res = gen1();
+
+    if (res !== undefined) {
+      return res;
+    }
+
+    return gen2();
+  };
+};
+
+const con = concat(fromTo(0, 3), fromTo(0, 2));
+console.log(con(), con(), con(), con(), con(), con());
