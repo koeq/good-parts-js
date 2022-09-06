@@ -205,5 +205,20 @@ const element = (arr, generator) => {
   };
 };
 
-const ele = element(["a", "b", "c"], fromTo(1, 3));
-console.log(ele(), ele(), ele());
+// const ele = element(["a", "b", "c"], fromTo(1, 3));
+// console.log(ele(), ele(), ele());
+
+const modifiedElement = (arr, generator = undefined) => {
+  let counter = 0;
+
+  return () => {
+    const index = generator ? generator() : counter;
+    if (index !== undefined) {
+      counter += 1;
+      return arr[index];
+    }
+  };
+};
+
+const ele = modifiedElement(["a", "b", "c"]);
+console.log(ele(), ele(), ele(), ele());
