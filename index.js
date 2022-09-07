@@ -278,5 +278,16 @@ const concat = (gen1, gen2) => {
   };
 };
 
-const con = concat(fromTo(0, 3), fromTo(0, 2));
-console.log(con(), con(), con(), con(), con(), con());
+// const con = concat(fromTo(0, 3), fromTo(0, 2));
+// console.log(con(), con(), con(), con(), con(), con());
+
+const gensymf = (generator, prefix) => {
+  return () => {
+    const res = generator();
+    if (res !== undefined) return `${prefix}${res}`;
+  };
+};
+
+const genh = gensymf(from(1), "H");
+const geng = gensymf(from(1), "G");
+console.log(genh(), genh(), geng(), geng());
