@@ -288,6 +288,25 @@ const gensymf = (generator, prefix) => {
   };
 };
 
-const genh = gensymf(from(1), "H");
-const geng = gensymf(from(1), "G");
-console.log(genh(), genh(), geng(), geng());
+// const genh = gensymf(from(1), "H");
+// const geng = gensymf(from(1), "G");
+// console.log(genh(), genh(), geng(), geng());
+const calllog = (func, n) => {
+  while (n > 0) {
+    n--;
+    console.log(func());
+  }
+};
+
+const fibonacci = (first, second) => {
+  return () => {
+    const next = first + second;
+    first = second;
+    second = next;
+    // delay sequence
+    return next - first;
+  };
+};
+
+const fib = fibonacci(0, 1);
+calllog(fib, 20);
