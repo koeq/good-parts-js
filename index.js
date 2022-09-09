@@ -308,5 +308,40 @@ const fibonacci = (first, second) => {
   };
 };
 
-const fib = fibonacci(0, 1);
-calllog(fib, 20);
+// const fib = fibonacci(0, 1);
+// calllog(fib, 20);
+
+//  7
+const counter = (n) => {
+  return {
+    up() {
+      return ++n;
+    },
+
+    down() {
+      return --n;
+    },
+  };
+};
+
+// const obj = counter(10);
+// console.log(obj.up(), obj.down(), obj.down(), obj.down());
+
+const revokable = (binaryFunc) => {
+  let revoked = false;
+  return {
+    invoke() {
+      return (first, second) =>
+        revoked ? undefined : binaryFunc(first, second);
+    },
+    revoke() {
+      revoked = true;
+    },
+  };
+};
+
+const rev = revokable(add);
+const rev_add = rev.invoke();
+console.log(rev_add(3, 5));
+rev.revoke();
+console.log(rev_add(3, 5));
