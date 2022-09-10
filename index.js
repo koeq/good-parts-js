@@ -340,8 +340,40 @@ const revokable = (binaryFunc) => {
   };
 };
 
-const rev = revokable(add);
-const rev_add = rev.invoke();
-console.log(rev_add(3, 5));
-rev.revoke();
-console.log(rev_add(3, 5));
+// const rev = revokable(add);
+// const rev_add = rev.invoke();
+// console.log(rev_add(3, 5));
+// rev.revoke();
+// console.log(rev_add(3, 5));
+
+// 8
+const m = (value, source) => {
+  return {
+    value: value,
+    source: typeof source === "string" ? source : String(value),
+  };
+};
+
+// const addm = (obj1, obj2) => {
+//   return m(obj1.value + obj2.value, `(${obj1.source} + ${obj2.source}`);
+// };
+
+// console.log(JSON.stringify(addm(m(3), m(4))));
+
+const liftm = (binary, operator) => {
+  return (a, b) => {
+    if (typeof a === "number") {
+      a = m(a);
+    }
+    if (typeof b === "number") {
+      b = m(b);
+    }
+
+    return m(binary(a.value, b.value), `${a.source} ${operator} ${b.source}`);
+  };
+};
+
+const mulm = liftm(mul, "*");
+const addm = liftm(add, "+");
+console.log(JSON.stringify(mulm(m(3), m(4))));
+console.log(JSON.stringify(addm(3, 4)));
