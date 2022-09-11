@@ -101,7 +101,10 @@ const reverse = (func) => {
 // console.log(reverse(sub)(3, 2));
 
 const doubl = twice(add);
-const square = twice(mul);
+// const square = twice(mul);
+function square(n) {
+  return n * n;
+}
 
 const composeU = (firstFunc, secondFunc) => {
   return (first) => {
@@ -373,7 +376,23 @@ const liftm = (binary, operator) => {
   };
 };
 
-const mulm = liftm(mul, "*");
-const addm = liftm(add, "+");
-console.log(JSON.stringify(mulm(m(3), m(4))));
-console.log(JSON.stringify(addm(3, 4)));
+// const mulm = liftm(mul, "*");
+// const addm = liftm(add, "+");
+// console.log(JSON.stringify(mulm(m(3), m(4))));
+// console.log(JSON.stringify(addm(3, 4)));
+
+// 9
+const exp = (value) => {
+  if (Array.isArray(value)) {
+    return value[0](exp(value[1]), exp(value[2]));
+  }
+
+  return value;
+};
+
+const nae = [Math.sqrt, [add, [square, 3], [square, 4]]];
+// console.log(exp(nae));
+
+const addg = (n) => {};
+
+console.log(addg(2)());
