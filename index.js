@@ -393,6 +393,21 @@ const exp = (value) => {
 const nae = [Math.sqrt, [add, [square, 3], [square, 4]]];
 // console.log(exp(nae));
 
-const addg = (n) => {};
 
-console.log(addg(2)());
+ 
+const addg = (first) => {
+  const more = (next) => {
+    if (typeof next === "undefined") {
+      return first;
+    }
+
+    first += next;
+    return more;
+  };
+
+  if (first !== undefined) {
+    return more;
+  }
+};
+
+console.log(addg(2)(4)());
