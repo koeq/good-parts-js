@@ -393,8 +393,6 @@ const exp = (value) => {
 const nae = [Math.sqrt, [add, [square, 3], [square, 4]]];
 // console.log(exp(nae));
 
-
- 
 const addg = (first) => {
   const more = (next) => {
     if (typeof next === "undefined") {
@@ -410,4 +408,47 @@ const addg = (first) => {
   }
 };
 
-console.log(addg(2)(4)());
+// console.log(addg(2)(4)(4)());
+
+const liftg = (binary) => {
+  return (first) => {
+    const more = (next) => {
+      if (typeof next === "undefined") {
+        return first;
+      }
+
+      first = binary(first, next);
+      return more;
+    };
+
+    if (first !== undefined) {
+      return more;
+    }
+  };
+};
+
+// console.log(liftg(mul)(2)());
+
+// const arrayg = (first) => {
+//   const arr = [];
+//   const more = (next) => {
+//     if (next === undefined) {
+//       return arr;
+//     }
+
+//     arr.push(next);
+
+//     return more;
+//   };
+
+//   return more(first);
+// };
+
+const arrayg = liftg((first, second) => {
+  const arr = [];
+  arr.push(first, second);
+
+  return arr;
+});
+
+console.log(arrayg(2)(4)());
