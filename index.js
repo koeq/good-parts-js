@@ -451,4 +451,11 @@ const arrayg = liftg((first, second) => {
   return arr;
 });
 
-console.log(arrayg(2)(4)());
+// console.log(arrayg(2)(4)());
+
+const continuize = (unary) => {
+  return (callback, ...args) => callback(unary(...args));
+};
+
+const sqrt = continuize(Math.sqrt);
+sqrt(console.log, 81);
