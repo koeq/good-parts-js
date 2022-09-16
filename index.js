@@ -457,5 +457,39 @@ const continuize = (unary) => {
   return (callback, ...args) => callback(unary(...args));
 };
 
-const sqrt = continuize(Math.sqrt);
-sqrt(console.log, 81);
+// const sqrt = continuize(Math.sqrt);
+// sqrt(console.log, 81);
+
+const vector = () => {
+  const arr = [];
+
+  const get = (index) => {
+    if (index < arr.length) return arr[+index];
+  };
+
+  const append = (element) => {
+    arr[arr.length] = element;
+  };
+
+  // const store = (index, element) => {
+  //   arr.splice(index, 0, element);
+  // };
+
+  const store = (index, element) => {
+    arr[+index] = element;
+  };
+
+  const log = () => console.log(arr);
+
+  return Object.freeze({
+    get,
+    append,
+    store,
+    log,
+  });
+};
+
+const vec = vector();
+// vec.append(1);
+// vec.store(0, 10);
+// vec.store(0, 0);
