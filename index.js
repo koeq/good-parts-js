@@ -493,3 +493,57 @@ const vec = vector();
 // vec.append(1);
 // vec.store(0, 10);
 // vec.store(0, 0);
+
+// 12
+// const pubsub = () => {
+//   const subscribers = [];
+
+//   return {
+//     subscribe(callback) {
+//       this.callback = callback;
+//       subscribers[subscribers.length] = this;
+//     },
+//     publish(input) {
+//       subscribers.forEach((subscriber) => subscriber.callback(input));
+//     },
+//   };
+// };
+
+const pubsub = () => {
+  const subscribers = [];
+
+  return Object.freeze({
+    subscribe(subscriber) {
+      subscribers.push(subscriber);
+    },
+    publish: function (publication) {
+      subscribers.forEach((subscriber) => {
+        setTimeout(() => subscriber(publication), 0);
+      });
+    },
+    log() {
+      console.log(subscribers);
+    },
+  });
+};
+
+const my_pub_sub = pubsub();
+my_pub_sub.subscribe(console.log);
+my_pub_sub.publish("worked");
+
+// SCREW with pubsub
+// 1. stop publishing process --> use try catch
+// my_pub_sub.subscribe();
+// 2. alter methods on object instance --> freeze object
+// my_pub_sub.publish = undefined;
+// 3. alter the subscribers array --> use e.g. forEach isntead of a loop
+//    in the loop variant the stored functin gets called as a method on the array object
+//    therefore its this keyword is bound to the array and gives us access to it.
+//   ForEach passes only one element at a time. There is no access to the array directly possible.
+// my_pub_sub.subscribe(function () {
+//   this.length = 0;
+// });
+// 4. send own message to the other subscribers --- not working :( ---
+// --> make the call to the provided callbacks async via setTimeout to make sure they get
+// executed one after the other
+// my_pub_sub.subscribe(() => my_pub_sub.publish("out of order"));
